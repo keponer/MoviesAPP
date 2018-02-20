@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.arg_a.moviesapp.Model.Movie;
+import com.example.arg_a.moviesapp.Utilities.MoviesAPI;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -27,8 +28,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     private ArrayList<Movie> moviesList;
 
     private int heightSize;
-
-    public MovieAdapter(Context context){this.context = context;}
+    private int page;
+    public MovieAdapter(Context context){
+        this.context = context;
+        page = 2;
+    }
 
     @Override
     public MovieAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -65,11 +69,28 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
                     .load(image)
                     .into(holder.movieImage);
         }
+
+        if(getItemCount()-1 == position){
+
+            MoviesAPI.getMovies(context, "https://api.themoviedb.org/3/movie/popular?api_key=APIKEY&page="+page, moviesList, new MoviesAPI.VolleyCallback() {
+                @Override
+                public void onSuccess(ArrayList<Movie> arrayList) {
+                    swapMovies(arrayList);
+                    page++;
+                }
+            });
+
+        }
     }
 
     @Override
     public int getItemCount() {
-        return moviesList.size();
+
+        int size = 0;
+
+        if(moviesList != null) size = moviesList.size();
+
+        return size;
     }
 
     public void swapMovies(ArrayList<Movie> arrayList){

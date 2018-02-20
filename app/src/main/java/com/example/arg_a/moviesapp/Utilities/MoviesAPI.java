@@ -71,6 +71,41 @@ public class MoviesAPI {
         queue.add(jsonArrayRequest);
     }
 
+    public static synchronized void getMovies (Context context, String url, ArrayList<Movie> arrayList, final VolleyCallback callback){
+
+        final ArrayList<Movie> movies = arrayList;
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+                    JSONArray movieList = response.getJSONArray(MOVIE_RESULTS);
+
+                    for(int i = 0;i<movieList.length();i++){
+
+                        movies.add(parseJSONtoMovie(movieList.getJSONObject(i)));
+
+                    }
+
+                    callback.onSuccess(movies);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        queue.add(jsonArrayRequest);
+    }
+
     public static Movie parseJSONtoMovie (JSONObject jsonMovie) throws JSONException {
 
         Movie movie;
