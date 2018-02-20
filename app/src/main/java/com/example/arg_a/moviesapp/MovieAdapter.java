@@ -2,14 +2,11 @@ package com.example.arg_a.moviesapp;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.example.arg_a.moviesapp.Model.Movie;
 import com.example.arg_a.moviesapp.Utilities.MoviesAPI;
@@ -27,10 +24,17 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
     private ArrayList<Movie> moviesList;
 
-    private int heightSize;
     private int page;
-    public MovieAdapter(Context context){
+
+    private final MovieAdapterOnClickHandler clickHandler;
+
+    public interface MovieAdapterOnClickHandler{
+        void onClick(Movie movie);
+    }
+
+    public MovieAdapter(Context context, MovieAdapterOnClickHandler clickHandler){
         this.context = context;
+        this.clickHandler = clickHandler;
         page = 2;
     }
 
@@ -49,19 +53,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
         if(getItemCount()>0){
 
-            ViewGroup.LayoutParams params = holder.movieCardLayout.getLayoutParams();
-
-            if(holder.movieCardLayout.getWidth()>0){
-                heightSize = (int) (holder.movieCardLayout.getWidth()*1.5);
-            }
-
-            params.height = heightSize;
-
-            holder.movieCardLayout.setLayoutParams(params);
-
-            Log.d("width", String.valueOf(holder.movieCardLayout.getWidth()));
-
-            String image = "http://image.tmdb.org/t/p/w185/" + moviesList.get(position).getPosterImage();
+            String image = MoviesAPI.IMG_URL_BASE +
+                    MoviesAPI.IMG_SIZE_PHONE +
+                    moviesList.get(position).getPosterImage();
 
             Log.d("ONBIND", image);
 
@@ -72,7 +66,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
         if(getItemCount()-1 == position){
 
-            MoviesAPI.getMovies(context, "https://api.themoviedb.org/3/movie/popular?api_key=APIKEY&page="+page, moviesList, new MoviesAPI.VolleyCallback() {
+            MoviesAPI.getMovies(context,
+                    MoviesAPI.BASE_URL +
+                            MoviesAPI.FILTER_POPULAR +
+                            MoviesAPI.API_KEY +
+                            MoviesAPI.PAGE_BASE +
+                            page,
+                    moviesList,
+                    new MoviesAPI.VolleyCallback() {
                 @Override
                 public void onSuccess(ArrayList<Movie> arrayList) {
                     swapMovies(arrayList);
@@ -86,11 +87,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     @Override
     public int getItemCount() {
 
-        int size = 0;
-
-        if(moviesList != null) size = moviesList.size();
-
-        return size;
+        if(moviesList == null) return 0;
+        return moviesList.size();
     }
 
     public void swapMovies(ArrayList<Movie> arrayList){
@@ -98,7 +96,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         notifyDataSetChanged();
     }
 
-    class MovieAdapterViewHolder extends RecyclerView.ViewHolder{
+    class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         final ImageView movieImage;
         final View movieCardLayout;
@@ -108,8 +106,18 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
             movieImage = itemView.findViewById(R.id.movieImage);
             movieCardLayout = itemView.findViewById(R.id.movieCardLayout);
+            itemView.setOnClickListener(this);
 
         }
 
+        @Override
+        public void onClick(View view) {
+
+            int position = getAdapterPosition();
+
+            Log.d("CLICK", "ASD");
+            clickHandler.onClick(moviesList.get(position));
+
+        }
     }
 }
