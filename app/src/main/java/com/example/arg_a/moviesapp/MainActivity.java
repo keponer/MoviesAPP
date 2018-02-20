@@ -32,13 +32,13 @@ public class MainActivity extends AppCompatActivity {
 
         adapter = new MovieAdapter(getApplicationContext());
 
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
 
-        MoviesAPI.getMovies(this, "https://api.themoviedb.org/3/movie/popular?api_key=ApiKEy", new MoviesAPI.VolleyCallback() {
+        MoviesAPI.getMovies(this, "https://api.themoviedb.org/3/movie/popular?api_key=APIKEY", new MoviesAPI.VolleyCallback() {
             @Override
             public void onSuccess(ArrayList<Movie> arrayList) {
                 Log.d("CALLBACK", String.valueOf(arrayList.size()));
