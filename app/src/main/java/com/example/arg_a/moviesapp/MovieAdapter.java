@@ -2,7 +2,6 @@ package com.example.arg_a.moviesapp;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +23,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
     private ArrayList<Movie> moviesList;
 
+    //The current page in the moviesdb
     private int page;
 
     private final MovieAdapterOnClickHandler clickHandler;
@@ -32,12 +32,23 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         void onClick(Movie movie);
     }
 
+    /**
+     * Constructor, set the context, the clickHandler and initialize the page to 2 (1 is always charged the first time)
+     * @param context Context
+     * @param clickHandler clickHandler
+     */
     public MovieAdapter(Context context, MovieAdapterOnClickHandler clickHandler){
         this.context = context;
         this.clickHandler = clickHandler;
         page = 2;
     }
 
+    /**
+     * Set the layout to the views
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @Override
     public MovieAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
@@ -48,6 +59,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         return new MovieAdapter.MovieAdapterViewHolder(view);
     }
 
+    /**
+     * Set the image for each movie and add if is the last position call a GET to get more movies
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(MovieAdapterViewHolder holder, int position) {
 
@@ -57,13 +73,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
                     MoviesAPI.IMG_SIZE_PHONE +
                     moviesList.get(position).getPosterImage();
 
-            Log.d("ONBIND", image);
 
             Picasso.with(context)
                     .load(image)
                     .into(holder.movieImage);
         }
 
+        //If we are in the last position do a GET to get more movies
         if(getItemCount()-1 == position){
 
             MoviesAPI.getMovies(context,
@@ -74,6 +90,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
                             page,
                     moviesList,
                     new MoviesAPI.VolleyCallback() {
+                // Put new ArrayList and add +1 to page variable
                 @Override
                 public void onSuccess(ArrayList<Movie> arrayList) {
                     swapMovies(arrayList);
@@ -84,6 +101,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         }
     }
 
+    /**
+     * Get the number of items
+     * @return number of items
+     */
     @Override
     public int getItemCount() {
 
@@ -91,16 +112,25 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         return moviesList.size();
     }
 
+    /**
+     * Set a new ArrayList to the Adapter
+     * @param arrayList
+     */
     public void swapMovies(ArrayList<Movie> arrayList){
         moviesList = arrayList;
         notifyDataSetChanged();
     }
+
 
     class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         final ImageView movieImage;
         final View movieCardLayout;
 
+        /**
+         * Bind Views and set ClickListener
+         * @param itemView
+         */
         public MovieAdapterViewHolder(View itemView){
             super(itemView);
 
@@ -110,12 +140,15 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
         }
 
+        /**
+         * Call onClick
+         * @param view
+         */
         @Override
         public void onClick(View view) {
 
             int position = getAdapterPosition();
 
-            Log.d("CLICK", "ASD");
             clickHandler.onClick(moviesList.get(position));
 
         }
