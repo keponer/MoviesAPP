@@ -68,7 +68,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
             MoviesAPI.getMovies(context,
                     MoviesAPI.BASE_URL +
-                            MoviesAPI.FILTER_POPULAR +
+                            MoviesAPI.currentFilter +
                             MoviesAPI.API_KEY +
                             MoviesAPI.PAGE_BASE +
                             page,

@@ -2,11 +2,14 @@ package com.example.arg_a.moviesapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MenuItem;
 
 import com.example.arg_a.moviesapp.Model.Movie;
 import com.example.arg_a.moviesapp.Utilities.MoviesAPI;
@@ -18,6 +21,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private RecyclerView recyclerView;
     private MovieAdapter adapter;
 
+    private BottomNavigationView navigation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +31,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         ArrayList<Movie> arrayList = new ArrayList<>();
 
         recyclerView = findViewById(R.id.moviesRecyclerView);
+        navigation = findViewById(R.id.bottom_navigation);
+
+        navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
 
         adapter = new MovieAdapter(getApplicationContext(), this);
 
@@ -43,9 +51,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             }
         });
 
-
-
-
         Log.d("ONCREATE", String.valueOf(arrayList.size()));
     }
 
@@ -61,5 +66,50 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         startActivity(intent);
 
     }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                    switch (item.getItemId()){
+                        case R.id.most_popular:
+
+                            if(MoviesAPI.currentFilter != MoviesAPI.FILTER_POPULAR){
+                                MoviesAPI.getMovies(getApplicationContext(), MoviesAPI.BASE_URL + MoviesAPI.FILTER_POPULAR + MoviesAPI.API_KEY, new MoviesAPI.VolleyCallback() {
+                                    @Override
+                                    public void onSuccess(ArrayList<Movie> arrayList) {
+                                        Log.d("CALLBACK", String.valueOf(arrayList.size()));
+                                        adapter.swapMovies(arrayList);
+                                        MoviesAPI.currentFilter = MoviesAPI.FILTER_POPULAR;
+                                    }
+                                });
+
+                                return true;
+                            }
+                            break;
+
+                        case R.id.top_rated:
+
+                            if(MoviesAPI.currentFilter != MoviesAPI.FILTER_TOP_RATED){
+
+                                MoviesAPI.getMovies(getApplicationContext(), MoviesAPI.BASE_URL + MoviesAPI.FILTER_TOP_RATED + MoviesAPI.API_KEY, new MoviesAPI.VolleyCallback() {
+                                    @Override
+                                    public void onSuccess(ArrayList<Movie> arrayList) {
+                                        Log.d("CALLBACK", String.valueOf(arrayList.size()));
+                                        adapter.swapMovies(arrayList);
+                                        MoviesAPI.currentFilter = MoviesAPI.FILTER_TOP_RATED;
+                                    }
+                                });
+
+                                return true;
+                            }
+                            break;
+
+                    }
+                    Log.d("NAVIGATION", String.valueOf(item.getItemId()));
+                    return false;
+                }
+            };
 
 }

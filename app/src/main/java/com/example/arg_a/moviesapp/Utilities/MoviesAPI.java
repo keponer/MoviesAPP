@@ -31,13 +31,16 @@ public class MoviesAPI {
     private static final String MOVIE_USER_RATING       = "vote_average";
     private static final String MOVIE_RELEASE_DATE      = "release_date";
 
-    public static final String BASE_URL        = "https://api.themoviedb.org/3/movie/";
-    public static final String FILTER_POPULAR  = "popular";
-    public static final String API_KEY         = "APIKEY";
-    public static final String PAGE_BASE       = "&page=";
+    public static final String BASE_URL             = "https://api.themoviedb.org/3/movie/";
+    public static final String FILTER_POPULAR       = "popular";
+    public static final String FILTER_TOP_RATED     = "top_rated";
+    public static final String API_KEY              = "APIKEY";
+    public static final String PAGE_BASE            = "&page=";
 
     public static final String IMG_URL_BASE     = "http://image.tmdb.org/t/p/";
     public static final String IMG_SIZE_PHONE   = "w185/";
+
+    public static String currentFilter = FILTER_POPULAR;
 
 
     public interface VolleyCallback{
