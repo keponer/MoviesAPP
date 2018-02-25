@@ -1,7 +1,6 @@
 package com.example.arg_a.moviesapp.Utilities;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -17,7 +16,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import static com.android.volley.Response.*;
+import static com.android.volley.Response.ErrorListener;
 
 /**
  * Created by arg-a on 18/02/2018.
@@ -147,7 +146,7 @@ public class MoviesAPI {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-
+                callback.onError();
 
             }
         });

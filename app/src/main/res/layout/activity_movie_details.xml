@@ -33,9 +33,24 @@
             android:layout_marginTop="8dp"
             android:adjustViewBounds="true"
             android:scaleType="fitXY"
+            android:contentDescription="@string/movie_poster_description"
             app:layout_constraintEnd_toStartOf="@+id/guideline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/movie_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:text="@string/movie_title_description"
+            android:textColor="@color/colorTextPrimary"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/movieImageDetail" />
 
         <TextView
             android:id="@+id/movie_release"
@@ -44,9 +59,9 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:fontFamily="roboto"
-            android:text="TextView"
+            android:text="@string/movie_release_description"
             android:textColor="@color/colorTextPrimary"
-            android:textSize="20dp"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="@+id/movie_title"
             app:layout_constraintStart_toStartOf="@+id/movie_title"
             app:layout_constraintTop_toBottomOf="@+id/movie_title" />
@@ -57,9 +72,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:fontFamily="roboto"
-            android:text="/10"
+            android:text="@string/movie_user_rating_description"
             android:textColor="@color/colorTextPrimary"
-            android:textSize="16dp"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@+id/movie_release"
             app:layout_constraintStart_toStartOf="@+id/movie_release"
             app:layout_constraintTop_toBottomOf="@+id/movie_release" />
@@ -85,25 +100,13 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
             android:fontFamily="roboto"
-            android:text="TextView"
+            android:text="@string/movie_synopsis_description"
             android:textColor="@color/colorTextPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/synopsis_divider" />
 
-        <TextView
-            android:id="@+id/movie_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="8dp"
-            android:gravity="center"
-            android:text="TextView"
-            android:textColor="@color/colorTextPrimary"
-            android:textSize="24dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toTopOf="@+id/movieImageDetail" />
+
 
     </android.support.constraint.ConstraintLayout>
 

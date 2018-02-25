@@ -3,4 +3,10 @@
     
     <string name="popular_movies">Most Popular</string>
     <string name="top_rated_movies">Top Rated</string>
+
+    <string name="movie_poster_description">Movie Poster</string>
+    <string name="movie_release_description">Movie Release</string>
+    <string name="movie_user_rating_description">10/10</string>
+    <string name="movie_synopsis_description">Synopsis</string>
+    <string name="movie_title_description">Title</string>
 </resources>

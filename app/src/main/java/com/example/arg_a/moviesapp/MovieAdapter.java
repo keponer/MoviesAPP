@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.arg_a.moviesapp.Model.Movie;
 import com.example.arg_a.moviesapp.Utilities.MoviesAPI;
@@ -103,18 +104,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
                         @Override
                         public void onError() {
 
-                            AlertDialog.Builder builder;
-
-                            builder = new AlertDialog.Builder(context);
-
-                            builder.setTitle("Error!")
-                                    .setMessage("You have no internet connexion")
-                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-
-                                        }
-                                    })
-                                    .show();
+                            Toast.makeText(context, "You have no internet connection :(", Toast.LENGTH_LONG).show();
 
                          }
                     });
