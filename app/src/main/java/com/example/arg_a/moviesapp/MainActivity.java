@@ -1,10 +1,15 @@
 package com.example.arg_a.moviesapp;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -29,22 +34,28 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        recyclerView = findViewById(R.id.moviesRecyclerView);
-        navigation = findViewById(R.id.bottom_navigation);
+        if(!isOnline()){
 
-        navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
+            noInternetConnectionDialog();
 
-        adapter = new MovieAdapter(getApplicationContext(), this);
+        }else {
+            recyclerView = findViewById(R.id.moviesRecyclerView);
+            navigation = findViewById(R.id.bottom_navigation);
 
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 3);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
+            navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
 
-        setMovies(MoviesAPI.FILTER_POPULAR);
+            adapter = new MovieAdapter(getApplicationContext(), this);
 
-        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) navigation.getLayoutParams();
-        layoutParams.setBehavior(new BottomNavigationBehavior());
+            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 3);
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setAdapter(adapter);
+
+            setMovies(MoviesAPI.FILTER_POPULAR);
+
+            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) navigation.getLayoutParams();
+            layoutParams.setBehavior(new BottomNavigationBehavior());
+        }
     }
 
     /**
@@ -93,7 +104,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                                 return true;
                             }
                             break;
-
                     }
                     return false;
                 }
@@ -105,14 +115,40 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
      */
     private void setMovies(String filter){
 
-        MoviesAPI.getMovies(getApplicationContext(), MoviesAPI.BASE_URL + filter + MoviesAPI.API_KEY, new MoviesAPI.VolleyCallback() {
-            @Override
-            public void onSuccess(ArrayList<Movie> arrayList) {
-                Log.d("CALLBACK", String.valueOf(arrayList.size()));
-                adapter.swapMovies(arrayList);
-            }
-        });
+            MoviesAPI.getMovies(getApplicationContext(), MoviesAPI.BASE_URL + filter + MoviesAPI.API_KEY, new MoviesAPI.VolleyCallback() {
+                @Override
+                public void onSuccess(ArrayList<Movie> arrayList) {
+                    Log.d("CALLBACK", String.valueOf(arrayList.size()));
+                    adapter.swapMovies(arrayList);
+                }
 
+                @Override
+                public void onError() {
+                    noInternetConnectionDialog();
+                }
+            });
     }
 
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+    public void noInternetConnectionDialog(){
+
+        AlertDialog.Builder builder;
+
+        builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Error!")
+                .setMessage("You have no internet connexion")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .show();
+    }
 }

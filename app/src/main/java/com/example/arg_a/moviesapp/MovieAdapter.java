@@ -1,6 +1,8 @@
 package com.example.arg_a.moviesapp;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -90,13 +92,31 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
                             page,
                     moviesList,
                     new MoviesAPI.VolleyCallback() {
-                // Put new ArrayList and add +1 to page variable
-                @Override
-                public void onSuccess(ArrayList<Movie> arrayList) {
-                    swapMovies(arrayList);
-                    page++;
-                }
-            });
+                        // Put new ArrayList and add +1 to page variable
+                        @Override
+                        public void onSuccess(ArrayList<Movie> arrayList) {
+                            swapMovies(arrayList);
+                            page++;
+                        }
+
+                        @Override
+                        public void onError() {
+
+                            AlertDialog.Builder builder;
+
+                            builder = new AlertDialog.Builder(context);
+
+                            builder.setTitle("Error!")
+                                    .setMessage("You have no internet connexion")
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                        }
+                                    })
+                                    .show();
+
+                         }
+                    });
 
         }
     }
