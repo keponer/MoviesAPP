@@ -118,7 +118,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             MoviesAPI.getMovies(getApplicationContext(), MoviesAPI.BASE_URL + filter + MoviesAPI.API_KEY, new MoviesAPI.VolleyCallback() {
                 @Override
                 public void onSuccess(ArrayList<Movie> arrayList) {
-                    Log.d("CALLBACK", String.valueOf(arrayList.size()));
                     adapter.swapMovies(arrayList);
                 }
 
@@ -129,6 +128,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             });
     }
 
+    /**
+     * Return if the device have internet connection
+     * @return boolean
+     */
     public boolean isOnline() {
         ConnectivityManager cm =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -136,6 +139,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
+    /**
+     * Sow a dialog Saying is not internet connection and finishing the app when the button is pressed
+     */
     public void noInternetConnectionDialog(){
 
         AlertDialog.Builder builder;

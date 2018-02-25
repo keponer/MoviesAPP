@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.arg_a.moviesapp.Model.Movie;
+import com.example.arg_a.moviesapp.Utilities.MoviesAPI;
 import com.squareup.picasso.Picasso;
 
 public class MovieDetailsActivity extends AppCompatActivity {
@@ -34,9 +35,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         movieSynopsis = findViewById(R.id.movie_synopsis);
         movieTitle = findViewById(R.id.movie_title);
 
-        String image = "http://image.tmdb.org/t/p/w185/" + movie.getPosterImage();
-
-        Log.d("DETAILS", image);
+        String image = MoviesAPI.IMG_URL_BASE + MoviesAPI.IMG_SIZE_PHONE + movie.getPosterImage();
 
         Picasso.with(this)
                 .load(image)
