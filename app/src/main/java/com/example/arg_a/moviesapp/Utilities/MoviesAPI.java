@@ -53,6 +53,7 @@ public class MoviesAPI {
      */
     public interface VolleyCallback{
         void onSuccess(ArrayList<Movie> arrayList);
+        void onError();
     }
 
 
@@ -95,6 +96,8 @@ public class MoviesAPI {
         }, new ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
+                callback.onError();
 
             }
         });
@@ -143,6 +146,8 @@ public class MoviesAPI {
         }, new ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
+
 
             }
         });
