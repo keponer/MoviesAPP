@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
                                 setMovies(MoviesAPI.FILTER_TOP_RATED);
 
-                                MoviesAPI.currentFilter = MoviesAPI.FILTER_POPULAR;
+                                MoviesAPI.currentFilter = MoviesAPI.FILTER_TOP_RATED;
 
                                 return true;
                             }
