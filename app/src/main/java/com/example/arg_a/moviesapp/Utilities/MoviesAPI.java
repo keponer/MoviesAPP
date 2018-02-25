@@ -1,6 +1,7 @@
 package com.example.arg_a.moviesapp.Utilities;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -165,7 +166,10 @@ public class MoviesAPI {
         String rating           = jsonMovie.getString(MOVIE_USER_RATING);
         String releaseDate      = jsonMovie.getString(MOVIE_RELEASE_DATE);
 
+
         movie = new Movie(originalTitle, poster, synopsis, rating, releaseDate);
+
+
 
         return movie;
     }
