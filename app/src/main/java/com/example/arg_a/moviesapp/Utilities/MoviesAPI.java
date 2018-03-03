@@ -8,6 +8,7 @@ import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.arg_a.moviesapp.BuildConfig;
 import com.example.arg_a.moviesapp.Model.Movie;
 
 import org.json.JSONArray;
@@ -36,7 +37,7 @@ public class MoviesAPI {
     public static final String BASE_URL             = "https://api.themoviedb.org/3/movie/";
     public static final String FILTER_POPULAR       = "popular";
     public static final String FILTER_TOP_RATED     = "top_rated";
-    public static final String API_KEY              = "APIKEY";
+    public static final String API_KEY              = BuildConfig.API_KEY;
     public static final String PAGE_BASE            = "&page=";
 
     //Constants to get the images and the size

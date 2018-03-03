@@ -11,15 +11,18 @@ import com.example.arg_a.moviesapp.Model.Movie;
 import com.example.arg_a.moviesapp.Utilities.MoviesAPI;
 import com.squareup.picasso.Picasso;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MovieDetailsActivity extends AppCompatActivity {
 
     private Movie movie;
 
-    private ImageView moviePoster;
-    private TextView movieRelease;
-    private TextView movieUserRating;
-    private TextView movieSynopsis;
-    private TextView movieTitle;
+    @BindView(R.id.movieImageDetail) ImageView moviePoster;
+    @BindView(R.id.movie_release) TextView movieRelease;
+    @BindView(R.id.movie_user_rating) TextView movieUserRating;
+    @BindView(R.id.movie_synopsis) TextView movieSynopsis;
+    @BindView(R.id.movie_title) TextView movieTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +32,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         movie = bundle.getParcelable("movie");
 
-        moviePoster = findViewById(R.id.movieImageDetail);
-        movieRelease = findViewById(R.id.movie_release);
-        movieUserRating = findViewById(R.id.movie_user_rating);
-        movieSynopsis = findViewById(R.id.movie_synopsis);
-        movieTitle = findViewById(R.id.movie_title);
+        ButterKnife.bind(this);
 
         String image = MoviesAPI.IMG_URL_BASE + MoviesAPI.IMG_SIZE_PHONE + movie.getPosterImage();
 
