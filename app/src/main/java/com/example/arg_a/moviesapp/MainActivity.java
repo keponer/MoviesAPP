@@ -22,40 +22,48 @@ import com.example.arg_a.moviesapp.Utilities.MoviesAPI;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler{
 
-    private RecyclerView recyclerView;
+    @BindView(R.id.moviesRecyclerView) RecyclerView recyclerView;
+    @BindView(R.id.bottom_navigation) BottomNavigationView navigation;
+
     private MovieAdapter adapter;
 
-    private BottomNavigationView navigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ButterKnife.bind(this);
+
         if(!isOnline()){
 
             noInternetConnectionDialog();
 
         }else {
-            recyclerView = findViewById(R.id.moviesRecyclerView);
-            navigation = findViewById(R.id.bottom_navigation);
 
-            navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
-
-            adapter = new MovieAdapter(getApplicationContext(), this);
-
-            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 3);
-            recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-            recyclerView.setAdapter(adapter);
-
-            setMovies(MoviesAPI.FILTER_POPULAR);
+            setRecyclerView();
 
             CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) navigation.getLayoutParams();
             layoutParams.setBehavior(new BottomNavigationBehavior());
         }
+    }
+
+    public void setRecyclerView(){
+        navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
+
+        adapter = new MovieAdapter(getApplicationContext(), this);
+
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 3);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
+
+        setMovies(MoviesAPI.FILTER_POPULAR);
     }
 
     /**
@@ -69,7 +77,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         intent.putExtra("movie", movie);
 
         startActivity(intent);
-
     }
 
     /**

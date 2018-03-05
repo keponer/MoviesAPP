@@ -3,6 +3,8 @@ package com.example.arg_a.moviesapp.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
 /**
  * Created by arg-a on 18/02/2018.
  */
@@ -14,17 +16,25 @@ public class Movie implements Parcelable{
     private String synopsis;
     private String rating;
     private String releaseDate;
+    private int id;
+
+    private ArrayList<MovieVideo> movieVideos;
+    private ArrayList<MovieReview> movieReviews;
 
     public Movie (){}
 
     public Movie (String originalTitle, String posterImage, String synopsis,
-                    String rating, String releaseDate){
+                    String rating, String releaseDate, int id){
 
         this.originalTitle  = originalTitle;
         this.posterImage    = posterImage;
         this.synopsis       = synopsis;
         this.rating         = rating;
         this.releaseDate    = releaseDate;
+        this.id             = id;
+
+        this.movieVideos = new ArrayList<>();
+        this.movieReviews = new ArrayList<>();
     }
 
     public Movie(Parcel parcel){
@@ -34,7 +44,10 @@ public class Movie implements Parcelable{
         this.synopsis       = parcel.readString();
         this.rating         = parcel.readString();
         this.releaseDate    = parcel.readString();
+        this.id             = parcel.readInt();
 
+        this.movieVideos = new ArrayList<>();
+        this.movieReviews = new ArrayList<>();
     }
 
 
@@ -78,6 +91,30 @@ public class Movie implements Parcelable{
         this.releaseDate = releaseDate;
     }
 
+    public ArrayList<MovieVideo> getMovieVideos() {
+        return movieVideos;
+    }
+
+    public void setMovieVideos(ArrayList<MovieVideo> movieVideos) {
+        this.movieVideos = movieVideos;
+    }
+
+    public ArrayList<MovieReview> getMovieReviews() {
+        return movieReviews;
+    }
+
+    public void setMovieReviews(ArrayList<MovieReview> movieReviews) {
+        this.movieReviews = movieReviews;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -91,6 +128,7 @@ public class Movie implements Parcelable{
         parcel.writeString(synopsis);
         parcel.writeString(rating);
         parcel.writeString(releaseDate);
+        parcel.writeInt(id);
 
     }
 
