@@ -193,6 +193,14 @@ public class MoviesAPI {
         return movie;
     }
 
+    /**
+     * Does a GET request to get videos and add the response to the Movie given
+     * In the callback return the new Movie
+     * @param context Context
+     * @param url URL where to do the GET
+     * @param movie Movie where to add the videos
+     * @param callback Callback
+     */
     public static synchronized void getMovieVideos(Context context, String url, final Movie movie, final VolleyCallback callback){
 
         final ArrayList<MovieVideo> movieVideos = new ArrayList<>();
@@ -240,6 +248,12 @@ public class MoviesAPI {
 
     }
 
+    /**
+     * Parse a JSONObject to a MovieVideo
+     * @param jsonVideoMovie object to parse
+     * @return MovieVideo
+     * @throws JSONException
+     */
     private static MovieVideo parseJSONtoMovieVideo (JSONObject jsonVideoMovie) throws JSONException {
 
         MovieVideo movieVideo;
@@ -254,6 +268,14 @@ public class MoviesAPI {
         return movieVideo;
     }
 
+    /**
+     * Does a GET request to get reviews and add the response to the Movie given
+     * In the callback return the new Movie
+     * @param context Context
+     * @param url URL to do the GET request
+     * @param movie Movie where to add the Reviews
+     * @param callback Callback
+     */
     public static synchronized void getMovieReviews(Context context, String url, final Movie movie, final VolleyCallback callback){
 
         final ArrayList<MovieReview> movieReviews = new ArrayList<>();
@@ -301,6 +323,12 @@ public class MoviesAPI {
 
     }
 
+    /**
+     * Parse a JSONObject to a MovieReview
+     * @param jsonMovieReview object to parse
+     * @return MovieReview
+     * @throws JSONException
+     */
     private static MovieReview parseJSONtoMovieReview (JSONObject jsonMovieReview) throws JSONException {
 
         MovieReview movieReview;

@@ -2,13 +2,11 @@ package com.example.arg_a.moviesapp;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.support.constraint.Guideline;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -41,8 +39,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailerAd
     @BindView(R.id.movie_video_recyclerView) RecyclerView videoRecyclerView;
     @BindView(R.id.movie_review_recyclerView) RecyclerView reviewRecyclerView;
     @BindView(R.id.progressBar) ProgressBar progressBar;
-    @BindView(R.id.synopsis_divider)
-    View divider;
+    @BindView(R.id.synopsis_divider) View divider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +51,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailerAd
 
         ButterKnife.bind(this);
 
-        showProgessBar();
+        showProgressBar();
 
         setMovieVideosRecyclerView();
 
@@ -63,6 +60,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailerAd
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    /**
+     * Set all the elements in the UI less the recyclerView
+     */
     private void setUI(){
 
         String image = MoviesAPI.IMG_URL_BASE + MoviesAPI.IMG_SIZE_PHONE + movie.getPosterImage();
@@ -80,10 +80,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailerAd
 
     }
 
+    /**
+     * Set the MovieVideos RecyclerView, also do the call to setMovieVideos to get all the videos data
+     */
     private void setMovieVideosRecyclerView(){
-
-        Log.d("ASD", "asd");
-
         trailerAdapter = new TrailerAdapter(getApplicationContext(), this);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -95,6 +95,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailerAd
         setMovieVideos();
     }
 
+    /**
+     * Set the MovieReview RecyclerView, also do the call to the setMovieReviews to get all the reviews data
+     */
     private void setMovieReviewRecyclerView(){
 
         reviewAdapter = new ReviewAdapter(getApplicationContext());
@@ -109,6 +112,11 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailerAd
 
     }
 
+    /**
+     * Handle the menu items (topBar)
+     * @param item menuItem
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -120,6 +128,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailerAd
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Do a Volley call to get all the data for MovieVideo, also if the call is succeed
+     * call the setMovieReviewRecyclerView()
+     */
     private void setMovieVideos(){
 
         MoviesAPI.getMovieVideos(getApplicationContext(),
@@ -145,6 +157,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailerAd
         });
     }
 
+    /**
+     * Do a Volley call to get all the data for MovieReview, also if the call is succeed
+     * call hideProgressBar() to show all the elements
+     */
     private void setMovieReviews(){
 
         MoviesAPI.getMovieReviews(getApplicationContext(),
@@ -168,10 +184,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailerAd
                 });
     }
 
+    /**
+     * Handle when a video button is pressed
+     * @param video
+     */
     @Override
     public void onClick(MovieVideo video) {
-        Log.d("CLICK", video.getName());
-
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(MoviesAPI.YOUTUBE_URL + video.getKey()));
 
         Intent chooser = Intent.createChooser(intent, "Open with...");
@@ -181,7 +199,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailerAd
         }
     }
 
-    private void showProgessBar(){
+    /**
+     * Hide all the elements in the view and show the progressBar
+     */
+    private void showProgressBar(){
 
         moviePoster.setVisibility(View.GONE);
         movieRelease.setVisibility(View.GONE);
@@ -196,6 +217,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailerAd
 
     }
 
+    /**
+     * Show all the elements in the view and hide the progressBar
+     */
     private void hideProgressBar(){
 
         moviePoster.setVisibility(View.VISIBLE);
