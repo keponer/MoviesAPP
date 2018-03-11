@@ -12,9 +12,11 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +43,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailerAd
 
     private boolean add;
 
+    @BindView(R.id.scrollView)    ScrollView scrollView;
     @BindView(R.id.movieImageDetail) ImageView moviePoster;
     @BindView(R.id.movie_release) TextView movieRelease;
     @BindView(R.id.movie_user_rating) TextView movieUserRating;
@@ -74,6 +77,25 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailerAd
         setUI();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putIntArray("ARTICLE_SCROLL_POSITION",
+                new int[]{ scrollView.getScrollX(), scrollView.getScrollY()});
+    }
+
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        final int[] position = savedInstanceState.getIntArray("ARTICLE_SCROLL_POSITION");
+        if(position != null) {
+            ViewTreeObserver vto = scrollView.getViewTreeObserver();
+            vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                public void onGlobalLayout() {
+                    scrollView.scrollTo(position[1], position[1]);
+                }
+            });
+        }
     }
 
     /**

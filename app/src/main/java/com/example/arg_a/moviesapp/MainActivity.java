@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     private MovieAdapter adapter;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +65,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         if(MoviesAPI.currentFilter.equals(MoviesAPI.FILTER_FAVORITE)){
             setMovies(MoviesAPI.currentFilter);
         }
-
     }
 
     /**
