@@ -51,7 +51,7 @@ public class MoviesAPI {
     public static final String FILTER_POPULAR       = "popular";
     public static final String FILTER_TOP_RATED     = "top_rated";
     public static final String FILTER_FAVORITE      = "favorite";
-    public static final String API_KEY              = BuildConfig.API_KEY;
+    public static final String API_KEY              = "?api_key=" + BuildConfig.API_KEY;
     public static final String PAGE_BASE            = "&page=";
     public static final String MOVIE_VIDEO          = "/videos";
     public static final String MOVIE_REVIEW         = "/reviews";
