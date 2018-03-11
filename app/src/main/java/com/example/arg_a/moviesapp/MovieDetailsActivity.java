@@ -1,18 +1,23 @@
 package com.example.arg_a.moviesapp;
 
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.arg_a.moviesapp.DB.MoviesContract;
 import com.example.arg_a.moviesapp.Model.Movie;
 import com.example.arg_a.moviesapp.Model.MovieVideo;
 import com.example.arg_a.moviesapp.Utilities.MoviesAPI;
@@ -31,6 +36,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailerAd
 
     private ReviewAdapter reviewAdapter;
 
+    private ContentResolver contentResolver;
+
+    private boolean add;
+
     @BindView(R.id.movieImageDetail) ImageView moviePoster;
     @BindView(R.id.movie_release) TextView movieRelease;
     @BindView(R.id.movie_user_rating) TextView movieUserRating;
@@ -40,6 +49,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailerAd
     @BindView(R.id.movie_review_recyclerView) RecyclerView reviewRecyclerView;
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.synopsis_divider) View divider;
+    @BindView(R.id.add_favorites)
+    Button addFavorites;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +60,11 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailerAd
         Bundle bundle = getIntent().getExtras();
         movie = bundle.getParcelable("movie");
 
+        contentResolver = getApplicationContext().getContentResolver();
+
         ButterKnife.bind(this);
+
+        textAddOrDelete();
 
         showProgressBar();
 
@@ -199,6 +214,39 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailerAd
         }
     }
 
+    public void addFavorites(View view){
+
+        if(add){
+            contentResolver.insert(MoviesContract.MoviesTable.CONTENT_URI, MoviesAPI.parseMovieToContentValues(movie));
+            addFavorites.setText("Delete Movie from Favorites");
+            add = false;
+        }
+        else{
+            contentResolver.delete(MoviesContract.MoviesTable.buildMovieIDUri(movie.getId()), null, null);
+            addFavorites.setText("Add Movie to Favorites");
+            add = true;
+        }
+        Log.d("add", "add");
+    }
+
+    private void textAddOrDelete(){
+
+        Cursor cursor = contentResolver.query(MoviesContract.MoviesTable.buildMovieIDUri(movie.getId()),
+                null,
+                null,
+                null,
+                null);
+
+        if(cursor.getCount()==0){
+            addFavorites.setText("Add Movie to Favorites");
+            add = true;
+        }
+        else{
+            addFavorites.setText("Delete Movie from Favorites");
+            add = false;
+        }
+
+    }
     /**
      * Hide all the elements in the view and show the progressBar
      */
@@ -212,6 +260,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailerAd
         videoRecyclerView.setVisibility(View.GONE);
         reviewRecyclerView.setVisibility(View.GONE);
         divider.setVisibility(View.GONE);
+        addFavorites.setVisibility(View.GONE);
 
         progressBar.setVisibility(View.VISIBLE);
 
@@ -230,6 +279,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailerAd
         videoRecyclerView.setVisibility(View.VISIBLE);
         reviewRecyclerView.setVisibility(View.VISIBLE);
         divider.setVisibility(View.VISIBLE);
+        addFavorites.setVisibility(View.VISIBLE);
 
         progressBar.setVisibility(View.INVISIBLE);
 

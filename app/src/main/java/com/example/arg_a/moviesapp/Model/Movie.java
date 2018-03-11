@@ -1,7 +1,10 @@
 package com.example.arg_a.moviesapp.Model;
 
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.example.arg_a.moviesapp.DB.MoviesContract;
 
 import java.util.ArrayList;
 
@@ -35,6 +38,20 @@ public class Movie implements Parcelable{
 
         this.movieVideos = new ArrayList<>();
         this.movieReviews = new ArrayList<>();
+    }
+
+    public Movie(Cursor cursor){
+
+        this.originalTitle  = cursor.getString(cursor.getColumnIndex(MoviesContract.MoviesTable.COLUMN_ORIGINAL_TITLE));
+        this.posterImage    = cursor.getString(cursor.getColumnIndex(MoviesContract.MoviesTable.COLUMN_POSTER_IMAGE));
+        this.synopsis       = cursor.getString(cursor.getColumnIndex(MoviesContract.MoviesTable.COLUMN_SYNOPSIS));
+        this.rating         = cursor.getString(cursor.getColumnIndex(MoviesContract.MoviesTable.COLUMN_RATING));
+        this.releaseDate    = cursor.getString(cursor.getColumnIndex(MoviesContract.MoviesTable.COLUMN_RELEASE_DATE));
+        this.id             = cursor.getInt(cursor.getColumnIndex(MoviesContract.MoviesTable._ID));
+
+        this.movieVideos = new ArrayList<>();
+        this.movieReviews = new ArrayList<>();
+
     }
 
     public Movie(Parcel parcel){

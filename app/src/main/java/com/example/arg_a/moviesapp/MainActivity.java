@@ -1,8 +1,10 @@
 package com.example.arg_a.moviesapp;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -17,6 +19,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.example.arg_a.moviesapp.DB.MoviesContract;
 import com.example.arg_a.moviesapp.Model.Movie;
 import com.example.arg_a.moviesapp.Utilities.MoviesAPI;
 
@@ -111,6 +114,17 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                                 return true;
                             }
                             break;
+
+                        case R.id.favorite:
+
+                            if(!MoviesAPI.currentFilter.equals(MoviesAPI.FILTER_FAVORITE)){
+
+                                setMovies(MoviesAPI.FILTER_FAVORITE);
+
+                                MoviesAPI.currentFilter = MoviesAPI.FILTER_FAVORITE;
+
+                                return true;
+                            }
                     }
                     return false;
                 }
@@ -122,6 +136,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
      */
     private void setMovies(String filter){
 
+        if(!filter.equals(MoviesAPI.FILTER_FAVORITE)) {
             MoviesAPI.getMovies(getApplicationContext(), MoviesAPI.BASE_URL + filter + MoviesAPI.API_KEY, new MoviesAPI.VolleyCallback() {
                 @Override
                 public void onSuccess(ArrayList<Movie> arrayList) {
@@ -133,6 +148,25 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                     noInternetConnectionDialog();
                 }
             });
+        }
+        else{
+
+            ContentResolver contentResolver = getApplicationContext().getContentResolver();
+
+            Cursor cursor;
+
+            cursor = contentResolver.query(MoviesContract.MoviesTable.CONTENT_URI, null, null, null, null, null);
+
+            ArrayList<Movie> arrayList = new ArrayList<>();
+
+            while(cursor.moveToNext()){
+
+                arrayList.add(new Movie(cursor));
+
+            }
+
+            adapter.swapMovies(arrayList);
+        }
     }
 
     /**

@@ -10,4 +10,9 @@
         android:id="@+id/top_rated"
         android:icon="@drawable/ic_star"
         android:title="@string/top_rated_movies" />
+
+    <item
+        android:id="@+id/favorite"
+        android:icon="@drawable/ic_favorite"
+        android:title="favorite" />
 </menu>

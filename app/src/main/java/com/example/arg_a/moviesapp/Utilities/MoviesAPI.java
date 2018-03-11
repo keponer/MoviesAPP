@@ -1,5 +1,6 @@
 package com.example.arg_a.moviesapp.Utilities;
 
+import android.content.ContentValues;
 import android.content.Context;
 
 import com.android.volley.Request;
@@ -9,6 +10,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.arg_a.moviesapp.BuildConfig;
+import com.example.arg_a.moviesapp.DB.MoviesContract;
 import com.example.arg_a.moviesapp.Model.Movie;
 import com.example.arg_a.moviesapp.Model.MovieReview;
 import com.example.arg_a.moviesapp.Model.MovieVideo;
@@ -49,6 +51,7 @@ public class MoviesAPI {
     public static final String BASE_URL             = "https://api.themoviedb.org/3/movie/";
     public static final String FILTER_POPULAR       = "popular";
     public static final String FILTER_TOP_RATED     = "top_rated";
+    public static final String FILTER_FAVORITE      = "favorite";
     public static final String API_KEY              = BuildConfig.API_KEY;
     public static final String PAGE_BASE            = "&page=";
     public static final String MOVIE_VIDEO          = "/videos";
@@ -339,6 +342,19 @@ public class MoviesAPI {
         movieReview = new MovieReview(author, content);
 
         return movieReview;
+    }
+
+    public static ContentValues parseMovieToContentValues (Movie movie) {
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(MoviesContract.MoviesTable.COLUMN_ORIGINAL_TITLE, movie.getOriginalTitle());
+        contentValues.put(MoviesContract.MoviesTable.COLUMN_POSTER_IMAGE, movie.getPosterImage());
+        contentValues.put(MoviesContract.MoviesTable.COLUMN_RATING, movie.getRating());
+        contentValues.put(MoviesContract.MoviesTable.COLUMN_RELEASE_DATE, movie.getReleaseDate());
+        contentValues.put(MoviesContract.MoviesTable.COLUMN_SYNOPSIS, movie.getSynopsis());
+        contentValues.put(MoviesContract.MoviesTable._ID, movie.getId());
+
+        return contentValues;
     }
 
 }

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -85,31 +86,34 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
                     .into(holder.movieImage);
         }
 
-        //If we are in the last position do a GET to get more movies
-        if(getItemCount()-1 == position){
+        if(!MoviesAPI.currentFilter.equals(MoviesAPI.FILTER_FAVORITE)){
 
-            MoviesAPI.getMovies(context,
-                    MoviesAPI.BASE_URL +
-                            MoviesAPI.currentFilter +
-                            MoviesAPI.API_KEY +
-                            MoviesAPI.PAGE_BASE +
-                            page,
-                    moviesList,
-                    new MoviesAPI.VolleyCallback() {
-                        // Put new ArrayList and add +1 to page variable
-                        @Override
-                        public void onSuccess(ArrayList<Movie> arrayList) {
-                            swapMovies(arrayList);
-                            page++;
-                        }
+            //If we are in the last position do a GET to get more movies
+            if(getItemCount()-1 == position) {
 
-                        @Override
-                        public void onError() {
+                MoviesAPI.getMovies(context,
+                        MoviesAPI.BASE_URL +
+                                MoviesAPI.currentFilter +
+                                MoviesAPI.API_KEY +
+                                MoviesAPI.PAGE_BASE +
+                                page,
+                        moviesList,
+                        new MoviesAPI.VolleyCallback() {
+                            // Put new ArrayList and add +1 to page variable
+                            @Override
+                            public void onSuccess(ArrayList<Movie> arrayList) {
+                                swapMovies(arrayList);
+                                page++;
+                            }
 
-                            Toast.makeText(context, "You have no internet connection :(", Toast.LENGTH_LONG).show();
+                            @Override
+                            public void onError() {
 
-                         }
-                    });
+                                Toast.makeText(context, "You have no internet connection :(", Toast.LENGTH_LONG).show();
+
+                            }
+                        });
+            }
 
         }
     }
