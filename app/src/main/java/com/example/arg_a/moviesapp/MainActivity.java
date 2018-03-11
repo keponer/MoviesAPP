@@ -56,6 +56,22 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }
     }
 
+    /**
+     * If we are in favorites, we reload the movies, just in case the user delete the movie from favorites
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(MoviesAPI.currentFilter.equals(MoviesAPI.FILTER_FAVORITE)){
+            setMovies(MoviesAPI.currentFilter);
+        }
+
+    }
+
+    /**
+     * Set the recyclerView to the view
+     */
     public void setRecyclerView(){
         navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
 
@@ -190,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         builder = new AlertDialog.Builder(this);
 
         builder.setTitle("Error!")
-                .setMessage("You have no internet connexion")
+                .setMessage(getApplicationContext().getResources().getString(R.string.no_internet_connexion))
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         finish();

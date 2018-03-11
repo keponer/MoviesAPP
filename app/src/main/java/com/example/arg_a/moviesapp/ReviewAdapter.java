@@ -40,7 +40,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewAdap
     @Override
     public void onBindViewHolder(ReviewAdapter.ReviewAdapterViewHolder holder, int position) {
 
-        holder.movieReview.setText(movieReviewList.get(position).getContent());
+        holder.autorReview.setText(movieReviewList.get(position).getAuthor() + ":");
+        holder.movieReview.setText(movieReviewList.get(position).getContent() + "\n");
 
     }
 
@@ -59,6 +60,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewAdap
 
         @BindView(R.id.movie_review)
         TextView movieReview;
+        @BindView(R.id.movie_review_author) TextView autorReview;
 
         public ReviewAdapterViewHolder(View itemView) {
             super(itemView);

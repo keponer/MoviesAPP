@@ -4,8 +4,8 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.arg_a.moviesapp.DB.MoviesContract;
 import com.example.arg_a.moviesapp.Model.Movie;
@@ -168,6 +169,11 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailerAd
             @Override
             public void onError() {
 
+                Toast.makeText(getApplicationContext(),
+                        "Has been a problem getting the videos",
+                        Toast.LENGTH_LONG)
+                        .show();
+
             }
         });
     }
@@ -195,6 +201,11 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailerAd
                     @Override
                     public void onError() {
 
+                        Toast.makeText(getApplicationContext(),
+                                "Has been a problem getting the reviews",
+                                Toast.LENGTH_LONG)
+                                .show();
+
                     }
                 });
     }
@@ -214,21 +225,38 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailerAd
         }
     }
 
+    /**
+     * onClickListerner. Add or delete favorites when the button is pressed
+     * @param view
+     */
     public void addFavorites(View view){
 
         if(add){
             contentResolver.insert(MoviesContract.MoviesTable.CONTENT_URI, MoviesAPI.parseMovieToContentValues(movie));
-            addFavorites.setText("Delete Movie from Favorites");
+            addFavorites.setText(getApplicationContext().getResources().getText(R.string.movie_delete_favorites));
             add = false;
+
+            Toast.makeText(getApplicationContext(),
+                    String.valueOf(getApplicationContext().getResources().getText(R.string.movie_added_favorites)),
+                    Toast.LENGTH_LONG)
+                    .show();
+
         }
         else{
             contentResolver.delete(MoviesContract.MoviesTable.buildMovieIDUri(movie.getId()), null, null);
-            addFavorites.setText("Add Movie to Favorites");
+            addFavorites.setText(getApplicationContext().getResources().getText(R.string.movie_add_favorites));
             add = true;
+
+            Toast.makeText(getApplicationContext(),
+                    String.valueOf(getApplicationContext().getResources().getText(R.string.movie_deleted_favorites)),
+                    Toast.LENGTH_LONG)
+                    .show();
         }
-        Log.d("add", "add");
     }
 
+    /**
+     * When the view is created set the text button
+     */
     private void textAddOrDelete(){
 
         Cursor cursor = contentResolver.query(MoviesContract.MoviesTable.buildMovieIDUri(movie.getId()),
@@ -238,11 +266,11 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailerAd
                 null);
 
         if(cursor.getCount()==0){
-            addFavorites.setText("Add Movie to Favorites");
+            addFavorites.setText(getApplicationContext().getResources().getText(R.string.movie_add_favorites));
             add = true;
         }
         else{
-            addFavorites.setText("Delete Movie from Favorites");
+            addFavorites.setText(getApplicationContext().getResources().getText(R.string.movie_delete_favorites));
             add = false;
         }
 

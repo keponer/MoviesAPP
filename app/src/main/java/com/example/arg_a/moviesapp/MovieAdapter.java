@@ -2,11 +2,9 @@ package com.example.arg_a.moviesapp;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -109,7 +107,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
                             @Override
                             public void onError() {
 
-                                Toast.makeText(context, "You have no internet connection :(", Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, context.getResources().getString(R.string.no_internet_connexion), Toast.LENGTH_LONG).show();
 
                             }
                         });

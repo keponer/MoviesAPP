@@ -9,4 +9,15 @@
     <string name="movie_user_rating_description">10/10</string>
     <string name="movie_synopsis_description">Synopsis</string>
     <string name="movie_title_description">Title</string>
+
+    <string name="movie_add_favorites">Add Movie to Favorites</string>
+    <string name="movie_delete_favorites">Delete Movie from Favorites</string>
+
+    <string name="movie_review_author">Author:</string>
+    <string name="movie_review">Review.</string>
+
+    <string name="movie_added_favorites">The movie has been added to favorites</string>
+    <string name="movie_deleted_favorites">The movie has been deleted from favorites</string>
+
+    <string name="no_internet_connexion">You have no internet connexion</string>
 </resources>

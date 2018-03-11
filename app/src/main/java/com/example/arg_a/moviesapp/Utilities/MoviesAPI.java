@@ -20,7 +20,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 import static com.android.volley.Response.ErrorListener;
 
@@ -61,7 +60,7 @@ public class MoviesAPI {
     public static final String IMG_URL_BASE     = "http://image.tmdb.org/t/p/";
     public static final String IMG_SIZE_PHONE   = "w185/";
 
-    public static String YOUTUBE_URL = "https://youtu.be/";
+    public static final String YOUTUBE_URL = "https://youtu.be/";
     //Which is the current filter
     public static String currentFilter = FILTER_POPULAR;
 
@@ -344,6 +343,11 @@ public class MoviesAPI {
         return movieReview;
     }
 
+    /**
+     * Parse a Movie Object into a ContentValues Object
+     * @param movie Movie to parse
+     * @return ContentValues
+     */
     public static ContentValues parseMovieToContentValues (Movie movie) {
         ContentValues contentValues = new ContentValues();
 
